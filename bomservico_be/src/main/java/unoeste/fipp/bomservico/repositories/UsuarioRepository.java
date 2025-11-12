@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 import unoeste.fipp.bomservico.entities.Usuario;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario,String> {
-}
+public interface UsuarioRepository extends JpaRepository<Usuario, String> { }
