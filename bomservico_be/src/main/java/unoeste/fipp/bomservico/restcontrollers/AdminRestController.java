@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.bomservico.entities.Categoria;
-import unoeste.fipp.bomservico.repositories.CategoriaRepository;
+import unoeste.fipp.bomservico.services.AnuncioService;
+import unoeste.fipp.bomservico.services.CategoriaService;
 
 import java.util.Optional;
 
@@ -13,14 +14,17 @@ import java.util.Optional;
 @RequestMapping(value = "apis")
 public class AdminRestController {
     @Autowired
-    private CategoriaRepository categoriaRepository;
+    private CategoriaService categoriaService;
+
+    @Autowired
+    private AnuncioService anuncioService;
 
     //Rotas Categoria
     @PostMapping(value = "adm")
     public ResponseEntity<Object> create(@RequestBody Categoria categoria) {
         if (categoria != null) {
             try {
-                categoria = categoriaRepository.save(categoria);
+                categoria = categoriaService.salvar(categoria);
                 return ResponseEntity.ok(categoria);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
@@ -34,7 +38,7 @@ public class AdminRestController {
     public ResponseEntity<Object> update(@RequestBody Categoria categoria) {
         if (categoria != null) {
             try {
-                categoria = categoriaRepository.save(categoria);
+                categoria = categoriaService.salvar(categoria);
                 return ResponseEntity.ok(categoria);
             } catch (Exception ex) {
                 return ResponseEntity.badRequest().build();
@@ -48,7 +52,7 @@ public class AdminRestController {
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         if (id != 0) {
             try {
-                categoriaRepository.deleteById(id);
+                categoriaService.excluir(id);
                 return ResponseEntity.status(HttpStatus.OK).build();
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
@@ -60,14 +64,14 @@ public class AdminRestController {
 
     @GetMapping(value = "get-all-cat")
     public ResponseEntity<Object> list() {
-        return ResponseEntity.ok(categoriaRepository.findAll());
+        return ResponseEntity.ok(categoriaService.getAll());
     }
 
     @GetMapping(value = "get-cat/{id}")
     public ResponseEntity<Object> read(@PathVariable Long id) {
         if (id != 0) {
             try {
-                Optional<Categoria> categoria = categoriaRepository.findById(id);
+                Optional<Categoria> categoria = categoriaService.get(id);
                 if (categoria.isPresent()) {
                     return ResponseEntity.ok(categoria);
                 } else {
@@ -86,7 +90,7 @@ public class AdminRestController {
     public ResponseEntity<Object> deleteAnuncio(@PathVariable Long id) {
         if (id != 0) {
             try {
-                categoriaRepository.deleteById(id);
+                anuncioService.deleteAnuncio(id);
                 return ResponseEntity.status(HttpStatus.OK).build();
             } catch (Exception ex) {
                 return ResponseEntity.badRequest().build();

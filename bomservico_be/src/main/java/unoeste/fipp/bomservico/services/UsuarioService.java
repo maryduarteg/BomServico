@@ -1,8 +1,12 @@
 package unoeste.fipp.bomservico.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import unoeste.fipp.bomservico.entities.Categoria;
 import unoeste.fipp.bomservico.entities.Usuario;
 import unoeste.fipp.bomservico.repositories.UsuarioRepository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -23,5 +27,22 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+
+    public List<Usuario> getAll()
+    {
+        return usuarioRepository.findAll();
+    }
+
+    public Optional<Usuario> get(String id) {
+        return usuarioRepository.findById(id);
+    }
+
+    public Usuario salvar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    public void excluir(String id) {
+        usuarioRepository.deleteById(id);
     }
 }
