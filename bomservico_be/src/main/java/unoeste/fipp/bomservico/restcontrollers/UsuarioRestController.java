@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.bomservico.entities.Usuario;
-import unoeste.fipp.bomservico.repositories.UsuarioRepository;
+import unoeste.fipp.bomservico.services.UsuarioService;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -14,14 +14,14 @@ import java.util.Optional;
 @RequestMapping(value = "apis/usuario")
 public class UsuarioRestController {
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     //Rotas usuario
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody Usuario usuario) {
         if (usuario != null) {
             try {
-                usuario = usuarioRepository.save(usuario);
+                usuario = usuarioService.salvar(usuario);
                 return ResponseEntity.ok(usuario);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
@@ -37,13 +37,13 @@ public class UsuarioRestController {
             return ResponseEntity.badRequest().body("ID inválido");
         }
 
-        Optional<Usuario> existente = usuarioRepository.findById(usuario.getLogin());
+        Optional<Usuario> existente = usuarioService.get(usuario.getLogin());
         if (existente.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado");
         }
 
         try {
-            Usuario atualizado = usuarioRepository.save(usuario);
+            Usuario atualizado = usuarioService.salvar(usuario);
             return ResponseEntity.ok(atualizado);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar");
@@ -54,7 +54,7 @@ public class UsuarioRestController {
     public ResponseEntity<Object> delete(@PathVariable String str) {
         if (!Objects.equals(str, "")) {
             try {
-                usuarioRepository.deleteById(str);
+                usuarioService.excluir(str);
                 return ResponseEntity.status(HttpStatus.OK).build();
             } catch (Exception e) {
                 return ResponseEntity.badRequest().build();
@@ -66,14 +66,14 @@ public class UsuarioRestController {
 
     @GetMapping(value = "get-all")
     public ResponseEntity<Object> list() {
-        return ResponseEntity.ok(usuarioRepository.findAll());
+        return ResponseEntity.ok(usuarioService.getAll());
     }
 
     @GetMapping(value = "/{str}")
     public ResponseEntity<Object> read(@PathVariable String str) {
         if (!Objects.equals(str, "")) {
             try {
-                Optional<Usuario> usuario = usuarioRepository.findById(str);
+                Optional<Usuario> usuario = usuarioService.get(str);
                 if (usuario.isPresent()) {
                     return ResponseEntity.ok(usuario);
                 } else {
