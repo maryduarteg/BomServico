@@ -172,14 +172,37 @@ https://templatemo.com/tm-593-personal-shape
                 document.body.style.overflow = 'auto';
             }
         });
-        document.getElementById("inputGroupFile04").addEventListener("keyup", () => {
-            var tabela = document.getElementById("tabela-busca");
-            fetch("http://localhost:8080/apis/MUDARISSO", {})
-                .then(resp => {
 
+        document.getElementById("btn-cadastrar").addEventListener("click",()=>{
+            const form = document.getElementById('contact-form');
+
+            const prestador = {
+                login: form.login,
+                senha: form.senha,
+                nivel: "",
+                nome: form.nome,
+                cpf: form.cpf,
+                dtNasc: form,
+                email: form.datanasc,
+                telefone: form.telefone,
+                endereco: form.endereco
+            };
+
+            fetch("http://localhost:8080/apis/prestador", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(prestador)
+            })
+                .then(resp => {
+                    if (!resp.ok) throw new Error("Erro ao cadastrar");
+                    return resp.json();
+                })
+                .then(resp => {
+                    alert("Sucesso! Prestador cadastrado.");
+                    form.reset();
                 })
                 .catch(() => {
-                    mostrarMensagem("Erro ao cadastrar oficina!", false);
+                    alert("Erro ao cadastrar prestador.");
                 });
-
         });
+

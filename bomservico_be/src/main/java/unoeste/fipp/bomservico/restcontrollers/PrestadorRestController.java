@@ -26,6 +26,7 @@ public class PrestadorRestController {
     private UsuarioService usuarioService;
     @Autowired
     private InteresseService interesseService;
+
     @GetMapping(value = "get-anuncio/{id}")
     public ResponseEntity<Object> getAnuncioById(@PathVariable Long id){
         Anuncio anuncio = anuncioService.getAnuncio(id);
@@ -68,6 +69,21 @@ public class PrestadorRestController {
         return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo anuncio","anuncio inconsistente"));
     }
 
+    @PostMapping
+    public ResponseEntity<Object> inserirUsuario(@RequestBody Usuario usuario)
+    {
+        if(usuario!=null){
+            try {
+                Usuario novo = usuarioService.alterar(usuario);
+                return ResponseEntity.ok(novo);
+            }
+            catch (Exception e){
+                return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo prestador",e.getMessage()));
+            }
+        }
+        return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo prestador","prestador inconsistente"));
+    }
+
     @PutMapping
     public ResponseEntity<Object> alterarAnuncio(@RequestBody Anuncio anuncio)
     {
@@ -107,7 +123,7 @@ public class PrestadorRestController {
             return ResponseEntity.badRequest().body(new Erro("Anuncio não existe",""));
     }
 
-    @DeleteMapping(value="/menagem/{id}")
+    @DeleteMapping(value="/mensagem/{id}")
     ResponseEntity<Object> deleteMensagem(@PathVariable Long id)
     {
         if(interesseService.deletar(id))
