@@ -117,7 +117,7 @@ https://templatemo.com/tm-593-personal-shape
             
             // Simulate form submission with better feedback
             setTimeout(() => {
-                submitBtn.textContent = 'Message Sent! ✓';
+                submitBtn.textContent = 'Prestador cadastrado';
                 submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                 
                 // Show success animation
@@ -136,15 +136,7 @@ https://templatemo.com/tm-593-personal-shape
         });
 
         // Enhanced parallax effect for hero background
-        let ticking = false;
-        
-        function updateParallax() {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            const rate = scrolled * -0.3;
-            hero.style.transform = `translateY(${rate}px)`;
-            ticking = false;
-        }
+
 
         window.addEventListener('scroll', () => {
             if (!ticking) {
@@ -158,7 +150,7 @@ https://templatemo.com/tm-593-personal-shape
             tag.addEventListener('mouseenter', () => {
                 tag.style.transform = 'translateY(-2px) scale(1.05)';
             });
-            
+
             tag.addEventListener('mouseleave', () => {
                 tag.style.transform = 'translateY(0) scale(1)';
             });
@@ -177,18 +169,18 @@ https://templatemo.com/tm-593-personal-shape
             const form = document.getElementById('contact-form');
 
             const prestador = {
-                login: form.login,
-                senha: form.senha,
-                nivel: "",
-                nome: form.nome,
-                cpf: form.cpf,
-                dtNasc: form,
-                email: form.datanasc,
-                telefone: form.telefone,
-                endereco: form.endereco
+                login: form.login.value,
+                senha: form.senha.value,
+                nivel: 2,
+                nome: form.nome.value,
+                cpf: form.cpf.value,
+                dtNasc: form.datanasc.value,
+                email: form.email.value,
+                telefone: form.telefone.value,
+                endereco: form.endereco.value
             };
 
-            fetch("http://localhost:8080/apis/prestador", {
+            fetch("http://localhost:8080/apis/usuario", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(prestador)
@@ -202,7 +194,9 @@ https://templatemo.com/tm-593-personal-shape
                     form.reset();
                 })
                 .catch(() => {
+                    console.log(prestador);
                     alert("Erro ao cadastrar prestador.");
+
                 });
         });
 
