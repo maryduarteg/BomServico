@@ -138,13 +138,6 @@ https://templatemo.com/tm-593-personal-shape
         // Enhanced parallax effect for hero background
 
 
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(updateParallax);
-                ticking = true;
-            }
-        });
-
         // Add subtle hover effects to skill tags
         document.querySelectorAll('.skill-tag').forEach(tag => {
             tag.addEventListener('mouseenter', () => {
