@@ -29,6 +29,12 @@ public class UsuarioService {
         return false;
     }
 
+    public Usuario getByLogin(String login) {
+        Usuario usuario;
+        usuario=usuarioRepository.findByLogin(login).orElse(null);
+        return usuario;
+    }
+
     public List<Usuario> getAll()
     {
         return usuarioRepository.findAll();
