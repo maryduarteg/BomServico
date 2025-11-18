@@ -9,7 +9,7 @@ import unoeste.fipp.bomservico.services.AnuncioService;
 import unoeste.fipp.bomservico.services.CategoriaService;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "apis")
 public class AdminRestController {

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.bomservico.entities.Usuario;
 import unoeste.fipp.bomservico.repositories.UsuarioRepository;
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("public/login")

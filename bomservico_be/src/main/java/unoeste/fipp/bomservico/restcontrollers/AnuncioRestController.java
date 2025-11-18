@@ -9,7 +9,7 @@ import unoeste.fipp.bomservico.entities.Erro;
 import unoeste.fipp.bomservico.repositories.AnuncioRepository;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("public/anuncio")
 public class AnuncioRestController {

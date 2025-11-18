@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.bomservico.entities.Interesse;
 import unoeste.fipp.bomservico.repositories.InteresseRepository;
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("public/mensagem")

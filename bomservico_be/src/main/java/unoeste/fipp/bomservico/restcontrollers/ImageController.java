@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+@CrossOrigin(origins = "*")
 
 @RestController
 @RequestMapping("apis/image")

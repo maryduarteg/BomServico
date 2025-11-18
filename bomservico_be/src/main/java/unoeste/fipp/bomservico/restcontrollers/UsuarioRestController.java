@@ -9,7 +9,7 @@ import unoeste.fipp.bomservico.services.UsuarioService;
 
 import java.util.Objects;
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "apis/usuario")
 public class UsuarioRestController {

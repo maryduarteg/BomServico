@@ -104,36 +104,6 @@ https://templatemo.com/tm-593-personal-shape
             });
         });
 
-        // Enhanced form submission with better UX
-        document.querySelector('.contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            // Add loading state
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            submitBtn.style.background = 'linear-gradient(135deg, #94a3b8, #64748b)';
-            
-            // Simulate form submission with better feedback
-            setTimeout(() => {
-                submitBtn.textContent = 'Message Sent! ✓';
-                submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-                
-                // Show success animation
-                submitBtn.style.transform = 'scale(1.05)';
-                setTimeout(() => {
-                    submitBtn.style.transform = 'scale(1)';
-                }, 200);
-                
-                setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                    submitBtn.style.background = '';
-                    document.querySelector('.contact-form').reset();
-                }, 3000);
-            }, 2000);
-        });
 
         // Enhanced parallax effect for hero background
         let ticking = false;
@@ -174,12 +144,40 @@ https://templatemo.com/tm-593-personal-shape
         });
         document.getElementById("inputGroupFile04").addEventListener("keyup", () => {
             var tabela = document.getElementById("tabela-busca");
-            fetch("http://localhost:8080/apis/MUDARISSO", {})
+            var valorBuscado =  document.getElementById("inputGroupFile04").value;
+            fetch("http://localhost:8080/public/anuncio/get-filter", {})
                 .then(resp => {
+                    console.log(resp);
+                    resp.forEach(anuncio => {
 
+                        if(anuncio.descr.includes(valorBuscado))
+                        {
+                            //fazer a lógica aqui
+                            let linha = document.createElement("tr");
+                            let coluna = document.createElement("td");
+                            coluna.innerHTML = anuncio.usuario.nome;
+                            linha.appendChild(coluna);
+
+                            coluna = document.createElement("td");
+                            coluna.innerHTML = anuncio.titulo;
+                            linha.appendChild(coluna);
+
+                            coluna = document.createElement("td");
+                            coluna.innerHTML = anuncio.descr;
+                            linha.appendChild(coluna);
+
+                            coluna = document.createElement("td");
+                            coluna.innerHTML = anuncio.diasTrab;
+                            linha.appendChild(coluna);
+
+                            coluna = document.createElement("td");
+                            coluna.innerHTML = anuncio.horarioInicioDia+" às "+anuncio.horarioFimDia;
+                            linha.appendChild(coluna);
+                        }
+                    });
                 })
                 .catch(() => {
-                    mostrarMensagem("Erro ao cadastrar oficina!", false);
+                   // mostrarMensagem("Erro ao cadastrar oficina!", false);
                 });
 
         });

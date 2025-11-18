@@ -13,7 +13,7 @@ import unoeste.fipp.bomservico.services.InteresseService;
 import unoeste.fipp.bomservico.services.UsuarioService;
 
 import java.util.List;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "apis/prestador")
 public class PrestadorRestController {
