@@ -12,13 +12,16 @@ import unoeste.fipp.bomservico.services.UsuarioService;
 @CrossOrigin(origins = "*")
 
 @RestController
-@RequestMapping("public/login")
+@RequestMapping("/login")
 public class LoginRestController {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-   /* @PostMapping
+
+    @GetMapping
     public ResponseEntity<Object> login(
             @RequestParam String login,
             @RequestParam String senha
@@ -36,11 +39,13 @@ public class LoginRestController {
             return ResponseEntity.ok(token);
 
         } catch (Exception e) {
+            System.out.println(e);
             return ResponseEntity.badRequest().body("Erro ao processar login");
         }
-    }*/
+    }
 
-    @PostMapping
+
+    /*@PostMapping
     public ResponseEntity<Object> login(@RequestBody Login login){
         //verificar se o login e senha é de um usuario cadastrado
         Usuario usuario=usuarioService.getByLogin(login.getLogin());
@@ -50,5 +55,5 @@ public class LoginRestController {
             return ResponseEntity.ok(token);
         }
         return ResponseEntity.badRequest().body("Usuario não cadastrado");
-    }
+    }*/
 }

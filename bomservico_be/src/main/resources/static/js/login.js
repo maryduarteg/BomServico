@@ -155,36 +155,28 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-
-
 function Logar() {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    const login = document.forms[0].login.value;
+    const senha = document.forms[0].senha.value;
 
-    const raw = JSON.stringify({
-        "login": document.forms[0].login.value,
-        "senha": document.forms[0].senha.value
-    });
+    const url = `http://localhost:8080/login?login=${encodeURIComponent(login)}&senha=${encodeURIComponent(senha)}`;
 
-    const requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: raw,
-        redirect: "follow"
-    };
-
-    fetch("http://localhost:8080/public/login", requestOptions)
-        .then((response) =>{
-            if(response.ok) return response.text()
-            else throw Error("erro")
+    fetch(url, {
+        method: "GET"
+    })
+        .then(response => {
+            if (response.ok) return response.text();
+            throw Error("erro");
         })
-        .then((token) => {
-            localStorage.setItem("token",token);
-            console.log(token);
-            window.location.href = "../pages/index.html"
+        .then(token => {
+            localStorage.setItem("token", token);
+            window.location.href = "../pages/prestador.html";
         })
-        .catch((error) => console.error(error));
-
+        .catch(error => console.error(error));
 }
+
+
+
+
 
 
