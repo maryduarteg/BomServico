@@ -23,8 +23,16 @@ public class Interesse {
     @Column(name = "int_mensagem")
     private String mensagem;
 
+    @Transient
     @Column(name = "anu_id")
     private Integer anuId;
+
+    @ManyToOne
+    @JoinColumn(name = "anu_id")
+    private Anuncio anuncio;
+
+    @Column(name = "int_lida")
+    private Boolean lida = false;
 
     public Interesse() {}
 
@@ -54,4 +62,10 @@ public class Interesse {
 
     public Integer getAnuId() { return anuId; }
     public void setAnuId(Integer anuId) { this.anuId = anuId; }
+
+    public Anuncio getAnuncio() { return anuncio; }
+    public void setAnuncio(Anuncio anuncio) { this.anuncio = anuncio; }
+
+    public Boolean getLida() { return lida; }
+    public void setLida(Boolean lida) { this.lida = lida; }
 }
