@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository;
 import unoeste.fipp.bomservico.entities.Interesse;
 
 @Repository
-public interface InteresseRepository extends JpaRepository<Interesse, Integer> { }
+public interface InteresseRepository extends JpaRepository<Interesse, Long> { }
