@@ -10,7 +10,6 @@ https://templatemo.com/tm-593-personal-shape
 
 // Mobile menu functionality
 
-var servicos;
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileNavLinks = document.querySelectorAll('.mobile-nav-links a');
@@ -135,23 +134,6 @@ document.querySelector('.contact-form').addEventListener('submit', (e) => {
     }, 2000);
 });
 
-// Enhanced parallax effect for hero background
-let ticking = false;
-
-function updateParallax() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const rate = scrolled * -0.3;
-    hero.style.transform = `translateY(${rate}px)`;
-    ticking = false;
-}
-
-window.addEventListener('scroll', () => {
-    if (!ticking) {
-        requestAnimationFrame(updateParallax);
-        ticking = true;
-    }
-});
 
 // Add subtle hover effects to skill tags
 document.querySelectorAll('.skill-tag').forEach(tag => {
@@ -173,36 +155,36 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-document.getElementById("btn-cadastrar").addEventListener("click",()=>{
-    const form = document.getElementById('contact-form');
 
-    const prestador = {
-        login: form.login,
-        senha: form.senha,
-        nivel: "",
-        nome: form.nome,
-        cpf: form.cpf,
-        dtNasc: form,
-        email: form.datanasc,
-        telefone: form.telefone,
-        endereco: form.endereco
+
+function Logar() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "login": document.forms[0].login.value,
+        "senha": document.forms[0].senha.value
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
     };
 
-    fetch("http://localhost:8080/apis/prestador", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(prestador)
-    })
-        .then(resp => {
-            if (!resp.ok) throw new Error("Erro ao cadastrar");
-            return resp.json();
+    fetch("http://localhost:8080/public/login", requestOptions)
+        .then((response) =>{
+            if(response.ok) return response.text()
+            else throw Error("erro")
         })
-        .then(resp => {
-            alert("Sucesso! Prestador cadastrado.");
-            form.reset();
+        .then((token) => {
+            localStorage.setItem("token",token);
+            console.log(token);
+            window.location.href = "../pages/index.html"
         })
-        .catch(() => {
-            alert("Erro ao cadastrar prestador.");
-        });
-});
+        .catch((error) => console.error(error));
+
+}
+
 
