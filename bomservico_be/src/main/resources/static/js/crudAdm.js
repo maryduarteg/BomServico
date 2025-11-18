@@ -121,3 +121,6 @@ https://templatemo.com/tm-593-personal-shape
                 document.body.style.overflow = 'auto';
             }
         });
+
+        const btnAnuncio = document.getElementById("btn-anuncios");
+        btn

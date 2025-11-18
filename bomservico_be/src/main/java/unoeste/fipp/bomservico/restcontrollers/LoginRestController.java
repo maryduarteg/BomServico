@@ -45,7 +45,7 @@ public class LoginRestController {
         //verificar se o login e senha é de um usuario cadastrado
         Usuario usuario=usuarioService.getByLogin(login.getLogin());
         if(usuario.getSenha().equals(login.getSenha())) {
-            //caso afirmativo
+            //caso afirmativoooo
             String token = JWTTokenProvider.getToken(login.getLogin(), "1");
             return ResponseEntity.ok(token);
         }
