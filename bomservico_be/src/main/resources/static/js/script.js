@@ -142,42 +142,65 @@ https://templatemo.com/tm-593-personal-shape
                 document.body.style.overflow = 'auto';
             }
         });
-        document.getElementById("inputGroupFile04").addEventListener("keyup", () => {
-            var tabela = document.getElementById("tabela-busca");
-            var valorBuscado =  document.getElementById("inputGroupFile04").value;
-            fetch("http://localhost:8080/public/anuncio/get-filter", {})
-                .then(resp => {
-                    console.log(resp);
-                    resp.forEach(anuncio => {
 
-                        if(anuncio.descr.includes(valorBuscado))
-                        {
-                            //fazer a lógica aqui
-                            let linha = document.createElement("tr");
-                            let coluna = document.createElement("td");
-                            coluna.innerHTML = anuncio.usuario.nome;
-                            linha.appendChild(coluna);
+    let todosAnuncios = []; // armazena o resultado do backend uma única vez
 
-                            coluna = document.createElement("td");
-                            coluna.innerHTML = anuncio.titulo;
-                            linha.appendChild(coluna);
+    // Carrega tudo quando a página abre
+    document.addEventListener("DOMContentLoaded", () => {
 
-                            coluna = document.createElement("td");
-                            coluna.innerHTML = anuncio.descr;
-                            linha.appendChild(coluna);
+        fetch("http://localhost:8080/public/anuncio/get-filter")
+            .then(resp => {
+                if (!resp.ok) throw new Error("Erro HTTP: " + resp.status);
+                return resp.json();
+            })
+            .then(data => {
+                if (Array.isArray(data)) {
+                    todosAnuncios = data; // salva para uso posterior
+                    console.log("Anúncios carregados:", todosAnuncios);
+                } else {
+                    console.error("Resposta não é um array:", data);
+                }
+            })
+            .catch(err => console.error("Erro ao carregar anúncios:", err));
+    });
 
-                            coluna = document.createElement("td");
-                            coluna.innerHTML = anuncio.diasTrab;
-                            linha.appendChild(coluna);
+    document.getElementById("inputGroupFile04").addEventListener("keyup", () => {
 
-                            coluna = document.createElement("td");
-                            coluna.innerHTML = anuncio.horarioInicioDia+" às "+anuncio.horarioFimDia;
-                            linha.appendChild(coluna);
-                        }
-                    });
-                })
-                .catch(() => {
-                   // mostrarMensagem("Erro ao cadastrar oficina!", false);
-                });
+        const tabelaMae = document.getElementById("tabela-busca");
+        tabelaMae.classList.remove("d-none");
 
+        const tabela = document.getElementById("anuncios-resultado");
+        tabela.innerHTML = "";
+
+        const valorBuscado = document
+            .getElementById("inputGroupFile04")
+            .value
+            .trim()
+            .toLowerCase();
+
+        console.log("Buscando por:", valorBuscado);
+
+        // Filtra em cima do array já carregado
+        const filtrados = todosAnuncios.filter(a =>
+            a.descr && a.descr.toLowerCase().includes(valorBuscado)
+        );
+
+        // Exibe
+        filtrados.forEach(anuncio => {
+            const linha = document.createElement("tr");
+
+            linha.innerHTML = `
+                <td>${anuncio.usuario.nome}</td>
+                <td>${anuncio.titulo}</td>
+                <td>${anuncio.descr}</td>
+                <td>${anuncio.diasTrab}</td>
+                <td>${anuncio.horarioInicioDia} às ${anuncio.horarioFimDia}</td>
+            `;
+
+            tabela.appendChild(linha);
         });
+    });
+
+
+
+
