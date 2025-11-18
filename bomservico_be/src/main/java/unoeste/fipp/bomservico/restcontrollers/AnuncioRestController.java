@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import unoeste.fipp.bomservico.entities.Anuncio;
+import unoeste.fipp.bomservico.entities.Erro;
 import unoeste.fipp.bomservico.repositories.AnuncioRepository;
 
 import java.util.Optional;
@@ -44,5 +45,35 @@ public class AnuncioRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao buscar anúncio");
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> inserirAnuncio(@RequestBody Anuncio anuncio)
+    {
+        if(anuncio!=null){
+            try {
+                Anuncio novo = anuncioRepository.save(anuncio);
+                return ResponseEntity.ok(novo);
+            }
+            catch (Exception e){
+                return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo anuncio",e.getMessage()));
+            }
+        }
+        return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo anuncio","anuncio inconsistente"));
+    }
+
+    @PutMapping
+    public ResponseEntity<Object> alterarAnuncio(@RequestBody Anuncio anuncio)
+    {
+        if(anuncio!=null){
+            try {
+                Anuncio novo = anuncioRepository.save(anuncio);
+                return ResponseEntity.ok(novo);
+            }
+            catch (Exception e){
+                return ResponseEntity.badRequest().body(new Erro("Erro ao alterar novo anuncio",e.getMessage()));
+            }
+        }
+        return ResponseEntity.badRequest().body(new Erro("Erro ao alterar novo anuncio","anuncio inconsistente"));
     }
 }

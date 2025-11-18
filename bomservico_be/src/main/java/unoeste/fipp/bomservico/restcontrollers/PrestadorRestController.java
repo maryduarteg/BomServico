@@ -36,14 +36,14 @@ public class PrestadorRestController {
             return ResponseEntity.badRequest().body("Erro");
     }
 
-    @GetMapping(value = "get-anuncios/{login}")
+   /* @GetMapping(value = "get-anuncios/{login}")
     public ResponseEntity<Object> getAnuncioByLogin(@PathVariable String login){
         List<Anuncio> anuncio = anuncioService.getAllAnuncios(login);
         if(anuncio!=null)
             return ResponseEntity.ok(anuncio);
         else
             return ResponseEntity.badRequest().body("Erro");
-    }
+    }*/
 
     @GetMapping(value = "get-all-cat")
     public ResponseEntity<Object> getAllCat(){
@@ -54,20 +54,6 @@ public class PrestadorRestController {
             return ResponseEntity.badRequest().body("Erro");
     }
 
-    @PostMapping
-    public ResponseEntity<Object> inserirAnuncio(@RequestBody Anuncio anuncio)
-    {
-        if(anuncio!=null){
-            try {
-                Anuncio novo = anuncioService.inserirAtualizarAnuncio(anuncio);
-                return ResponseEntity.ok(novo);
-            }
-            catch (Exception e){
-                return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo anuncio",e.getMessage()));
-            }
-        }
-        return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo anuncio","anuncio inconsistente"));
-    }
 
     @PostMapping
     public ResponseEntity<Object> inserirUsuario(@RequestBody Usuario usuario)
@@ -84,20 +70,6 @@ public class PrestadorRestController {
         return ResponseEntity.badRequest().body(new Erro("Erro ao inserir novo prestador","prestador inconsistente"));
     }
 
-    @PutMapping
-    public ResponseEntity<Object> alterarAnuncio(@RequestBody Anuncio anuncio)
-    {
-        if(anuncio!=null){
-            try {
-                Anuncio novo = anuncioService.inserirAtualizarAnuncio(anuncio);
-                return ResponseEntity.ok(novo);
-            }
-            catch (Exception e){
-                return ResponseEntity.badRequest().body(new Erro("Erro ao alterar novo anuncio",e.getMessage()));
-            }
-        }
-        return ResponseEntity.badRequest().body(new Erro("Erro ao alterar novo anuncio","anuncio inconsistente"));
-    }
 
     @PutMapping
     public ResponseEntity<Object> alterarUsuario(@RequestBody Usuario usuario)
