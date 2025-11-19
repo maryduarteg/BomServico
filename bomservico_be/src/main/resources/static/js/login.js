@@ -173,8 +173,7 @@ function Logar() {
 
             localStorage.setItem("token", token);
             localStorage.setItem("nivel", payload.nivel);
-            localStorage.setItem("login", payload.sub);
-            //alert("nivel"+payload.nivel);
+            localStorage.setItem("login", payload.usuario);
             window.location.href = "../pages/index.html";
         })
         .catch(error => console.error(error));

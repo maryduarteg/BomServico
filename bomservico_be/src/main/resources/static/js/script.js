@@ -200,7 +200,12 @@ https://templatemo.com/tm-593-personal-shape
             tabela.appendChild(linha);
         });
     });
-
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("login");
+    localStorage.removeItem("nivel");
+    window.location.href = "../pages/index.html";
+});
 
 
 

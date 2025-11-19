@@ -1,12 +1,11 @@
 // ==================== VERIFICAÇÃO DE ACESSO ====================
 const nivel = JSON.parse(localStorage.getItem("nivel"));
-const login = JSON.parse(localStorage.getItem("sub"));
+const login = JSON.parse(localStorage.getItem("login"));
 if (!login) {
     alert("Faça login novamente.");
     window.location.href = "login.html";
 }
-
-if (nivel !== 1) { // Apenas prestadores (nível 1)
+else if(nivel !== 1) { // Apenas prestadores (nível 1)
     alert("Apenas prestadores podem acessar esta página.");
     window.location.href = "index.html";
 }
@@ -442,7 +441,7 @@ btnAtualizar.addEventListener("click",()=>{
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("sub");
+    localStorage.removeItem("login");
     localStorage.removeItem("nivel");
     window.location.href = "../pages/index.html";
 });
