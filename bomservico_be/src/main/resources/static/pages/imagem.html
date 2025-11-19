@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Personal Shape - Creative Designer</title>
+        <title>Cadastro de Anúncio</title>
         <link href="../css/cadastro.css" rel="stylesheet">
-
-        <!--
-            TemplateMo 593 personal shape
-            https://templatemo.com/tm-593-personal-shape
-        -->
     </head>
 
     <body>
@@ -20,7 +15,6 @@
             <div class="logo"><a href="index.html">BomServiço.com</a></div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-
             </ul>
             <div class="mobile-menu-toggle" id="mobileMenuToggle">
                 <div class="hamburger"></div>
@@ -49,53 +43,67 @@
         </div>
         <div class="container">
             <div class="contact-content">
-                <h1>Monte seu anuncio</h1>
+                <h1 id="form-title">Monte seu anúncio</h1>
+                <p id="user-info" style="color: #fff; margin-bottom: 20px;"></p>
+
                 <!--Formulario-->
-                <form class="contact-form fade-in" id="userform" method="POST" enctype="multipart/form-data">
+                <form class="contact-form fade-in" id="anuncio-form">
+                    <input type="hidden" id="anu_id" name="anu_id">
+                    <input type="hidden" id="usu_login" name="usu_login">
 
                     <div class="form-row">
-
                         <div class="form-group">
-                            <label for="titulo">Titulo</label>
-                            <input id="titulo" name="titulo" placeholder="Campanha de marketing" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="desc">Descrição</label>
-                            <input type="text" id="desc" name="desc" placeholder="Domingo - Domingo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Hini">Horario Inicio</label>
-                            <input type="date" id="Hini" name="Hini" placeholder="05:00" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="Hfim">Horario Fim</label>
-                            <input type="date" id="Hfim" name="Hfim" placeholder="06:00" required>
+                            <label for="anu_titulo">Título do Anúncio *</label>
+                            <input type="text" id="anu_titulo" name="anu_titulo" placeholder="Ex: Serviços de Marketing Digital" required maxlength="30">
                         </div>
 
                         <div class="form-group">
-                            <label for="nomeimg">Nome</label>
-                            <input type="text" id="nomeimg" name="nomeimg" placeholder="Imagem.png" required>
+                            <label for="anu_descricao">Descrição do Serviço *</label>
+                            <input id="anu_descricao" name="anu_descricao" placeholder="Descreva seu serviço em detalhes..." required maxlength="200" rows="4">
                         </div>
 
                         <div class="form-group">
-                            <label for="arqimg1">Imagem 1</label>
-                            <input type="file" id="arqimg1" name="arqimg1">
+                            <label for="anu_diastrabalho">Dias de Trabalho *</label>
+                            <input type="text" id="anu_diastrabalho" name="anu_diastrabalho" placeholder="Ex: Segunda a Sexta" required maxlength="30">
                         </div>
 
                         <div class="form-group">
-                            <label for="arqimg2">Imagem 2</label>
-                            <input type="file" id="arqimg2" name="arqimg2">
+                            <label for="anu_horarioinicio">Horário de Início *</label>
+                            <input type="time" id="anu_horarioinicio" name="anu_horarioinicio" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="arqimg3">Imagem 3</label>
-                            <input type="file" id="arqimg3" name="arqimg3">
+                            <label for="anu_horariofim">Horário de Término *</label>
+                            <input type="time" id="anu_horariofim" name="anu_horariofim" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="arqimg1">Foto 1</label>
+                            <input type="file" id="arqimg1" name="arqimg1" accept="image/*">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="arqimg2">Foto 2</label>
+                            <input type="file" id="arqimg2" name="arqimg2" accept="image/*">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="arqimg3">Foto 3</label>
+                            <input type="file" id="arqimg3" name="arqimg3" accept="image/*">
+                        </div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="btn-cadastrar">Cadastrar</button>
+                    <div>
+                        <button type="submit" class="submit-btn" id="btn-salvar">Cadastrar Anúncio</button>
+                        <button type="button" class="submit-btn" id="btn-cancelar" style="background: #666; display: none;">Cancelar</button>
+                    </div>
                 </form>
+
+                <!-- Lista de Anúncios -->
+                <div style="margin-top: 60px;">
+                    <h2 style="color: #fff; margin-bottom: 20px;">Meus Anúncios</h2>
+                    <div id="lista-anuncios"></div>
+                </div>
 
             </div>
         </div>
@@ -118,7 +126,6 @@
         </div>
     </footer>
 
-    <script src="../js/cadastro.js"></script>
-    <script src="../js/fotos.js"></script>
+    <script src="../js/cadastro-anuncio.js"></script>
     </body>
 </html>

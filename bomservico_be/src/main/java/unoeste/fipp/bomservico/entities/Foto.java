@@ -1,6 +1,7 @@
 package unoeste.fipp.bomservico.entities;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "foto")
@@ -16,6 +17,7 @@ public class Foto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="anu_id")
+    @JsonIgnore
     private Anuncio anuncio;
 
     public Foto(Long id, String nomeArq) {
@@ -40,5 +42,13 @@ public class Foto {
 
     public void setNomeArq(String nomeArq) {
         this.nomeArq = nomeArq;
+    }
+
+    public Anuncio getAnuncio() {
+        return anuncio;
+    }
+
+    public void setAnuncio(Anuncio anuncio) {
+        this.anuncio = anuncio;
     }
 }
