@@ -1,3 +1,17 @@
+// ==================== VERIFICAÇÃO DE ACESSO ====================
+const nivel = JSON.parse(localStorage.getItem("nivel"));
+const login = JSON.parse(localStorage.getItem("sub"));
+if (!login) {
+    alert("Faça login novamente.");
+    window.location.href = "login.html";
+}
+
+if (nivel !== 1) { // Apenas prestadores (nível 1)
+    alert("Apenas prestadores podem acessar esta página.");
+    window.location.href = "index.html";
+}
+
+
 let anunciosExcluidos = [];
 let categoriasExcluidas = [];
 // JavaScript Document
@@ -426,5 +440,10 @@ btnAtualizar.addEventListener("click",()=>{
         .catch(err => {console.error("Erro:", err); alert("Erro ao atualizar categoria")});
 });
 
-
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("sub");
+    localStorage.removeItem("nivel");
+    window.location.href = "../pages/index.html";
+});
 

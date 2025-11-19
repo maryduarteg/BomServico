@@ -1,9 +1,10 @@
 // ==================== VERIFICAÇÃO DE ACESSO ====================
 const nivel = JSON.parse(localStorage.getItem("nivel"));
-const login = JSON.parse(localStorage.getItem("login"));
+//DEIXA SUB MESMO!!!!!!!!!!!!!!!
+const login = JSON.parse(localStorage.getItem("sub")); //DEIXAR SUB MESMO, PQ SE NÃO DÁ ERRO!!!!!!
 if (!login) {
     alert("Faça login novamente.");
-    //window.location.href = "login.html";
+    window.location.href = "login.html";
 }
 
 if (nivel !== 1) { // Apenas prestadores (nível 1)
@@ -156,6 +157,8 @@ document.getElementById("btnMeusAnuncios").addEventListener("click", () => {
 
 // ==================== LOGOUT ====================
 document.getElementById("logoutBtn").addEventListener("click", () => {
-    localStorage.removeItem("usuarioLogado");
-    window.location.href = "login.html";
+    localStorage.removeItem("token");
+    localStorage.removeItem("sub");
+    localStorage.removeItem("nivel");
+    window.location.href = "../pages/index.html";
 });
