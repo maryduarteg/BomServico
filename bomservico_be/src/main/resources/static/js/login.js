@@ -170,14 +170,16 @@ function Logar() {
         })
         .then(token => {
             const payload = JSON.parse(atob(token.split(".")[1]));
-            alert("PAYLOAD: "+payload.nivel);
-            localStorage.setItem("nivel", payload.nivel);
-            //localStorage.setItem("token", token);
 
+            localStorage.setItem("token", token);
+            localStorage.setItem("nivel", payload.nivel);
+            localStorage.setItem("login", payload.sub);
+            //alert("nivel"+payload.nivel);
             window.location.href = "../pages/prestador.html";
         })
         .catch(error => console.error(error));
 }
+
 
 
 

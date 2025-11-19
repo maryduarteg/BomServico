@@ -1,12 +1,12 @@
 // ==================== VERIFICAÇÃO DE ACESSO ====================
-const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-
-if (!usuario) {
+const nivel = JSON.parse(localStorage.getItem("nivel"));
+const login = JSON.parse(localStorage.getItem("login"));
+if (!login) {
     alert("Faça login novamente.");
-    window.location.href = "login.html";
+    //window.location.href = "login.html";
 }
 
-if (usuario.nivel !== 1) { // Apenas prestadores (nível 1)
+if (nivel !== 1) { // Apenas prestadores (nível 1)
     alert("Apenas prestadores podem acessar esta página.");
     window.location.href = "index.html";
 }
