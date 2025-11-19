@@ -34,7 +34,8 @@ public class LoginRestController {
             }
 
             // Token bem simples para cumprir o trabalho
-            String token = "TOKEN_" + usuario.getLogin() + "_OK";
+            //String token = "TOKEN_" + usuario.getLogin() + "_OK";
+            String token = JWTTokenProvider.getToken(usuario.getLogin(), ""+usuario.getNivel());
 
             return ResponseEntity.ok(token);
 
