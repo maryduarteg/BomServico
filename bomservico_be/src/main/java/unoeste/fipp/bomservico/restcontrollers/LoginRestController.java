@@ -3,7 +3,6 @@ package unoeste.fipp.bomservico.restcontrollers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import unoeste.fipp.bomservico.entities.Login;
 import unoeste.fipp.bomservico.entities.Usuario;
 import unoeste.fipp.bomservico.repositories.UsuarioRepository;
 import unoeste.fipp.bomservico.security.JWTTokenProvider;

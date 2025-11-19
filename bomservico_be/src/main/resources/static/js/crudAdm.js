@@ -1,11 +1,4 @@
-/*
-
-TemplateMo 593 personal shape
-
-https://templatemo.com/tm-593-personal-shape
-
-*/
-
+let anunciosExcluidos = [];
 // JavaScript Document
 
         // Mobile menu functionality
@@ -86,20 +79,6 @@ https://templatemo.com/tm-593-personal-shape
             }
         });
 
-        // Enhanced smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const offsetTop = target.offsetTop - 80;
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
 
 
         // Add subtle hover effects to skill tags
@@ -123,4 +102,84 @@ https://templatemo.com/tm-593-personal-shape
         });
 
         const btnAnuncio = document.getElementById("btn-anuncios");
-        btn
+        const btnCategorias = document.getElementById("btn-categorias");
+        const tabelaAnuncios = document.getElementById("tabela-anuncios");
+        const btnApagar = document.getElementById("btn-apagar-anuncios");
+
+        btnApagar.addEventListener("click",()=>{
+            if(anunciosExcluidos.length !== 0)
+                excluirAnuncios();
+            else
+                alert("Nenhum anúncio selecionado");
+        });
+
+        //lógica para excluir categorias
+
+        btnAnuncio.addEventListener("click",()=>{
+            tabelaAnuncios.classList.remove("d-none");
+            let body = document.getElementById("anuncios-resultado");
+            btnApagar.classList.remove("d-none");
+            body.innerHTML = "";
+            fetch("http://localhost:8080/public/anuncio/get-filter")
+                .then(resp => {
+                    if (!resp.ok) throw new Error("Erro HTTP: " + resp.status);
+                    return resp.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    Array.from(data).forEach(function(a)
+                    {
+                        let linha = document.createElement("tr");
+                        let check = document.createElement("input");
+                        check.type = "checkbox";
+                        check.dataset.id = a.id;
+
+                        // adiciona/remover ID da lista de exclusão
+                        check.addEventListener("change", () => {
+                            const idNum = parseInt(check.dataset.id);
+                            if (check.checked) {
+                                if (!anunciosExcluidos.includes(idNum))
+                                    anunciosExcluidos.push(idNum);
+                            } else {
+                                anunciosExcluidos = anunciosExcluidos.filter(x => x !== idNum);
+                            }
+                            console.log("Anuncios selecionados pra excluir:", anunciosExcluidos);
+                        });
+
+                        linha.innerHTML = `
+                        <td>${a.usuario.nome}</td>
+                        <td>${a.titulo}</td>
+                        <td>${a.descr}</td>
+                        <td>${a.diasTrab}</td>
+                        <td>${a.horarioInicioDia} às ${a.horarioFimDia}</td>
+                        `;
+
+                        // cria a célula do checkbox
+                        let tdCheck = document.createElement("td");
+                        tdCheck.appendChild(check);
+
+                        // adiciona a célula na linha
+                        linha.appendChild(tdCheck);
+
+                        body.appendChild(linha);
+                    });
+
+                })
+                .catch(err => console.error("Erro ao carregar anúncios:", err));
+        });
+
+function excluirAnuncios()
+{
+    anunciosExcluidos.forEach(i => {
+        fetch(`http://localhost:8080/apis/adm/anuncio/${i}`, { method: "DELETE" })
+            .then(response => {
+                console.log("Status:", response.status);
+                if (!response.ok) throw new Error("Erro HTTP " + response.status);
+                return response.text(); // ou response.json() se o backend devolver JSON
+            })
+            .then(data => console.log("Resposta:", data))
+            .catch(err => console.error("Erro ao excluir:", err));
+
+    });
+    alert("Anúncios atualizadas!");
+}

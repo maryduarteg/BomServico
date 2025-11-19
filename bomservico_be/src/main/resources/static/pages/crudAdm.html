@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bom Serviço.com</title>
     <link href="../css/crudAdm.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+
 
 </head>
 <body>
@@ -42,10 +45,10 @@
         <a href="#" class="cta-button" id="btn-anuncios">Anúncios</a>
     </div>
 </section>
-
-<!-- Início para apagar anúncios -->
-<table class="d-none" id="tabela-anuncios">
-    <thead>
+<section id="main-content">
+    <!-- Início para apagar anúncios -->
+    <table class="d-none" id="tabela-anuncios">
+        <thead>
         <tr>
             <th>Prestador</th>
             <th>Titulo</th>
@@ -54,12 +57,18 @@
             <th>Horário</th>
             <th>Apagar</th>
         </tr>
-    </thead>
-    <tbody id="anuncios-resultado">
+        </thead>
+        <tbody id="anuncios-resultado">
 
-    </tbody>
-</table>
-<!-- Fim para apagar anúncios -->
+        </tbody>
+    </table>
+    <button type="submit" class="submit-btn d-none" id="btn-apagar-anuncios" >Apagar Anúncios</button>
+
+    <!-- Fim para apagar anúncios -->
+</section>
+
+
+
 
 
 
