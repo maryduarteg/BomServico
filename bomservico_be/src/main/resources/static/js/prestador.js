@@ -34,7 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Carrega perfil do prestador
     async function carregarPerfil() {
         try {
+
+            console.log("Usuario:", usuario);
+            console.log("Login que estou enviando para API:", usuario?.login);
+
             const dados = await fetchAPI(API + "perfil/" + usuario.login);
+
+            console.log("Dados recebidos da API:", dados);
+            console.log("Dados recebidos da API (detalhado):", JSON.stringify(dados, null, 2));
 
             document.getElementById("login").value = dados.login || "";
             document.getElementById("nome").value = dados.nome || "";
@@ -49,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("email").value = dados.email || "";
             document.getElementById("telefone").value = dados.telefone || "";
             document.getElementById("endereco").value = dados.endereco || "";
+
         } catch (err) {
             alert("Não foi possível carregar o perfil. Veja o console.");
             console.error(err);
@@ -99,13 +107,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.style.margin = "10px 0";
                 li.style.padding = "10px";
                 li.style.borderRadius = "5px";
-                if (m.int_lida) li.style.background = "#e6ffe6";
+                if (m.lida) li.style.background = "#e6ffe6";
                 li.innerHTML = `
-                    <strong>${m.int_nomeInteressado}</strong><br>
-                    <strong>Contato:</strong> ${m.int_telefone}<br><br>
-                    ${m.int_mensagem}<br><br>
-                    <button class="submit-btn" onclick="marcarLida(${m.int_id})">Marcar como lida</button>
-                    <button class="submit-btn" onclick="apagarMensagem(${m.int_id}, ${m.int_lida})">Apagar</button>
+                    <strong>${m.nomeInteressado}</strong><br>
+                    <strong>Contato:</strong> ${m.telefone}<br><br>
+                    ${m.mensagem}<br><br>
+                    <button class="submit-btn" onclick="marcarLida(${m.id})">Marcar como lida</button>
+                    <button class="submit-btn" onclick="apagarMensagem(${m.id}, ${m.lida})">Apagar</button>
                 `;
                 lista.appendChild(li);
             });
