@@ -20,7 +20,7 @@ public class AdminRestController {
     private AnuncioService anuncioService;
 
     //Rotas Categoria
-    @PostMapping(value = "adm")
+    @PostMapping(value = "/adm")
     public ResponseEntity<Object> create(@RequestBody Categoria categoria) {
         if (categoria != null) {
             try {
@@ -34,7 +34,7 @@ public class AdminRestController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping(value = "adm")
+    @PutMapping(value = "/adm")
     public ResponseEntity<Object> update(@RequestBody Categoria categoria) {
         if (categoria != null) {
             try {
@@ -48,7 +48,7 @@ public class AdminRestController {
         return ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping(value = "adm/cat/{id}")
+    @DeleteMapping(value = "/adm/cat/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id) {
         if (id != 0) {
             try {
@@ -62,12 +62,12 @@ public class AdminRestController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping(value = "get-all-cat")
+    @GetMapping(value = "/get-all-cat")
     public ResponseEntity<Object> list() {
         return ResponseEntity.ok(categoriaService.getAll());
     }
 
-    @GetMapping(value = "get-cat/{id}")
+    @GetMapping(value = "/get-cat/{id}")
     public ResponseEntity<Object> read(@PathVariable Long id) {
         if (id != 0) {
             try {
@@ -86,7 +86,7 @@ public class AdminRestController {
     }
 
     //Rotas Anuncio
-    @DeleteMapping(value = "adm/anuncio/{id}")
+    @DeleteMapping(value = "/adm/anuncio/{id}")
     public ResponseEntity<Object> deleteAnuncio(@PathVariable Long id) {
         if (id != 0) {
             try {

@@ -1,4 +1,5 @@
 let anunciosExcluidos = [];
+let categoriasExcluidas = [];
 // JavaScript Document
 
         // Mobile menu functionality
@@ -104,16 +105,28 @@ let anunciosExcluidos = [];
         const btnAnuncio = document.getElementById("btn-anuncios");
         const btnCategorias = document.getElementById("btn-categorias");
         const tabelaAnuncios = document.getElementById("tabela-anuncios");
+        const tabelaCategorias = document.getElementById("tabela-categorias");
         const btnApagar = document.getElementById("btn-apagar-anuncios");
+        const btnApagarCat = document.getElementById("btn-apagar-categorias");
+        const btnCriarCat = document.getElementById("btn-criar-categorias");
+        const btnCadastrar = document.getElementById("btn-cadastrar");
 
-        btnApagar.addEventListener("click",()=>{
+
+btnApagar.addEventListener("click",()=>{
             if(anunciosExcluidos.length !== 0)
                 excluirAnuncios();
             else
                 alert("Nenhum anúncio selecionado");
         });
 
-        //lógica para excluir categorias
+        btnApagarCat.addEventListener("click",()=>{
+            if(categoriasExcluidas.length !== 0)
+                excluirCategorias();
+            else
+                alert("Nenhuma categoria selecionado");
+        });
+
+        //lógica para excluir anuncios
 
         btnAnuncio.addEventListener("click",()=>{
             tabelaAnuncios.classList.remove("d-none");
@@ -168,18 +181,250 @@ let anunciosExcluidos = [];
                 .catch(err => console.error("Erro ao carregar anúncios:", err));
         });
 
-function excluirAnuncios()
-{
-    anunciosExcluidos.forEach(i => {
-        fetch(`http://localhost:8080/apis/adm/anuncio/${i}`, { method: "DELETE" })
-            .then(response => {
-                console.log("Status:", response.status);
-                if (!response.ok) throw new Error("Erro HTTP " + response.status);
-                return response.text(); // ou response.json() se o backend devolver JSON
-            })
-            .then(data => console.log("Resposta:", data))
-            .catch(err => console.error("Erro ao excluir:", err));
+        function excluirAnuncios()
+        {
+            anunciosExcluidos.forEach(i => {
+                fetch(`http://localhost:8080/apis/adm/anuncio/${i}`, { method: "DELETE" })
+                    .then(response => {
+                        console.log("Status:", response.status);
+                        if (!response.ok) throw new Error("Erro HTTP " + response.status);
+                        return response.text(); // ou response.json() se o backend devolver JSON
+                    })
+                    .then(data => console.log("Resposta:", data))
+                    .catch(err => console.error("Erro ao excluir:", err));
 
-    });
-    alert("Anúncios atualizadas!");
+            });
+            alert("Anúncios atualizadas!");
+        }
+
+        function excluirCategorias()
+        {
+            categoriasExcluidas.forEach(i => {
+                fetch(`http://localhost:8080/apis/adm/cat/${i}`, { method: "DELETE" })
+                    .then(response => {
+                        console.log("Status:", response.status);
+                        if (!response.ok) throw new Error("Erro HTTP " + response.status);
+                        return response.text(); // ou response.json() se o backend devolver JSON
+                    })
+                    .then(data => console.log("Resposta:", data))
+                    .catch(err => console.error("Erro ao excluir:", err));
+
+            });
+            alert("Categorias atualizadas!");
+        }
+document.getElementById("search-bar").addEventListener("keyup",()=>{
+    let body = document.getElementById("categorias-resultado");
+    body.innerHTML = "";
+    fetch("http://localhost:8080/apis/get-all-cat")
+        .then(resp => {
+            if (!resp.ok) throw new Error("Erro HTTP: " + resp.status);
+            return resp.json();
+        })
+        .then(data => {
+            console.log(data);
+            Array.from(data).forEach(function(cat)
+            {
+                if(cat.nome.toLowerCase().includes(document.getElementById("inputGroupFile04").value.toLowerCase()))
+                {
+                    let linha = document.createElement("tr");
+                    let check = document.createElement("input");
+                    check.type = "checkbox";
+                    check.dataset.id = cat.id;
+
+                    // adiciona/remover ID da lista de exclusão
+                    check.addEventListener("change", () => {
+                        const idNum = parseInt(check.dataset.id);
+                        if (check.checked) {
+                            if (!categoriasExcluidas.includes(idNum))
+                                categoriasExcluidas.push(idNum);
+                        } else {
+                            categoriasExcluidas = categoriasExcluidas.filter(x => x !== idNum);
+                        }
+                        console.log("Anuncios selecionados pra excluir:", categoriasExcluidas);
+                    });
+
+                    linha.innerHTML = `
+                            <td>${cat.id}</td>
+                            <td>${cat.nome}</td>
+                            `;
+
+                    let tdEdit= document.createElement("td");
+                    tdEdit.appendChild(createBotaoEditar(cat.id, cat.nome));
+                    linha.appendChild(tdEdit);
+                    // cria a célula do checkbox
+                    let tdCheck = document.createElement("td");
+                    tdCheck.appendChild(check);
+
+                    // adiciona a célula na linha
+                    linha.appendChild(tdCheck);
+
+                    body.appendChild(linha);
+
+                    let botoesEditar = document.getElementsByClassName("btn-editar");
+                    Array.from(botoesEditar).forEach(e => {
+                        e.addEventListener("click", function() {
+                            carregarEdicao(e.dataset.id, e.dataset.nome);
+
+                        });
+                    });
+                }
+            });
+
+        })
+        .catch(err => console.error("Erro ao carregar categorias:", err));
+
+});
+btnCategorias.addEventListener("click",()=>{
+    tabelaCategorias.classList.remove("d-none");
+    btnApagarCat.classList.remove("d-none");
+    btnCriarCat.classList.remove("d-none");
+    document.getElementById("search-bar").classList.remove("d-none");
+    let body = document.getElementById("categorias-resultado");
+    body.innerHTML = "";
+    fetch("http://localhost:8080/apis/get-all-cat")
+        .then(resp => {
+            if (!resp.ok) throw new Error("Erro HTTP: " + resp.status);
+            return resp.json();
+        })
+        .then(data => {
+            console.log(data);
+            Array.from(data).forEach(function(cat)
+            {
+                let linha = document.createElement("tr");
+                let check = document.createElement("input");
+                check.type = "checkbox";
+                check.dataset.id = cat.id;
+
+                // adiciona/remover ID da lista de exclusão
+                check.addEventListener("change", () => {
+                    const idNum = parseInt(check.dataset.id);
+                    if (check.checked) {
+                        if (!categoriasExcluidas.includes(idNum))
+                            categoriasExcluidas.push(idNum);
+                    } else {
+                        categoriasExcluidas = categoriasExcluidas.filter(x => x !== idNum);
+                    }
+                    console.log("Anuncios selecionados pra excluir:", categoriasExcluidas);
+                });
+
+                linha.innerHTML = `
+                        <td>${cat.id}</td>
+                        <td>${cat.nome}</td>
+                        `;
+
+                let tdEdit= document.createElement("td");
+                tdEdit.appendChild(createBotaoEditar(cat.id, cat.nome));
+                linha.appendChild(tdEdit);
+                // cria a célula do checkbox
+                let tdCheck = document.createElement("td");
+                tdCheck.appendChild(check);
+
+                // adiciona a célula na linha
+                linha.appendChild(tdCheck);
+                body.appendChild(linha);
+
+                let botoesEditar = document.getElementsByClassName("btn-editar");
+                Array.from(botoesEditar).forEach(e => {
+                    e.addEventListener("click", function() {
+                        carregarEdicao(e.dataset.id, e.dataset.nome);
+
+                    });
+                });
+
+            });
+
+        })
+        .catch(err => console.error("Erro ao carregar categorias:", err));
+});
+
+function createBotaoEditar(id, nome) {
+    let botao = document.createElement("button");
+    let info = document.createElement("i");
+
+    botao.dataset.id = id;
+    botao.dataset.nome = nome;
+
+
+    // classe do botão
+    botao.classList.add("btn-editar");
+
+    // ícone (Font Awesome)
+    info.classList.add("fas", "fa-edit");
+
+    botao.appendChild(info);
+    return botao;
 }
+btnCriarCat.addEventListener("click",()=>
+{
+    let form = document.getElementById("criarCat");
+    form.classList.remove("d-none");
+});
+
+btnCadastrar.addEventListener("click",()=>{
+    let valor = document.getElementById("novonome").value;
+    if(valor === "")
+    {
+        alert("Categoria vazia");
+        return;
+    }
+    const categoria = {
+        nome: document.getElementById("novonome").value
+    };
+
+    //console.log("JSON enviado:", aluno);
+
+    fetch("http://localhost:8080/apis/adm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(categoria)
+    })
+        .then(resp => {
+            console.log("Status:", resp.status);
+            alert("Categoria cadastrada com sucesso");
+            return resp.text();
+        })
+        .then(text => {console.log("Resposta:", text); })
+        .catch(err => {console.error("Erro:", err); alert("Erro ao cadastrar aluno")});
+    document.getElementById("novonome").value = "";
+});
+
+function carregarEdicao(id, nome)
+{
+    let form = document.getElementById("form-editar-categoria");
+    form.classList.remove("d-none");
+    document.getElementById("idcat").value = id;
+    document.getElementById("nome").value =  nome;
+}
+
+
+const btnAtualizar = document.getElementById("btn-atualizar");
+btnAtualizar.addEventListener("click",()=>{
+    let id = document.getElementById("idcat").value;
+    let nome = document.getElementById("nome").value;
+    if(id === "" || nome === "")
+    {
+        console.log("Campos indefinidos");
+        return;
+    }
+
+    const categoria = {
+        id: id,
+        nome: nome
+    };
+
+    fetch("http://localhost:8080/apis/adm", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(categoria)
+    })
+        .then(resp => {
+            console.log("Status:", resp.status);
+            alert("Categoria atualizada com sucesso");
+            return resp.text();
+        })
+        .then(text => {console.log("Resposta:", text); })
+        .catch(err => {console.error("Erro:", err); alert("Erro ao atualizar categoria")});
+});
+
+
+
