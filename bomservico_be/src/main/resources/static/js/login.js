@@ -161,9 +161,7 @@ function Logar() {
 
     const url = `http://localhost:8080/login?login=${encodeURIComponent(login)}&senha=${encodeURIComponent(senha)}`;
 
-    fetch(url, {
-        method: "GET"
-    })
+    fetch(url, { method: "GET" })
         .then(response => {
             if (response.ok) return response.text();
             throw Error("erro");
@@ -173,11 +171,14 @@ function Logar() {
 
             localStorage.setItem("token", token);
             localStorage.setItem("nivel", payload.nivel);
-            localStorage.setItem("login", payload.usuario);
-            window.location.href = "../pages/index.html";
+            localStorage.setItem("login", payload.usuario); // CORRIGIDO: usar 'usuario' e não 'login'
+
+            window.location.href = "../pages/prestador.html";
         })
+
         .catch(error => console.error(error));
 }
+
 
 
 
