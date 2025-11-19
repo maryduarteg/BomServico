@@ -76,4 +76,20 @@ public class AnuncioRestController {
         }
         return ResponseEntity.badRequest().body(new Erro("Erro ao alterar novo anuncio","anuncio inconsistente"));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletarAnuncio(@PathVariable Long id) {
+        try {
+            if (!anuncioRepository.existsById(id)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Anúncio não encontrado");
+            }
+
+            anuncioRepository.deleteById(id);
+
+            return ResponseEntity.ok("Anúncio excluído com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao excluir anúncio: " + e.getMessage());
+        }
+    }
 }

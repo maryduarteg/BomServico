@@ -36,7 +36,7 @@ public class Anuncio {
                                                  inverseJoinColumns = @JoinColumn(name="cat_id"))
     private List<Categoria> categoriaList;
 
-    @OneToMany(mappedBy = "anuncio", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "anuncio", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Foto> fotoList;
 
     public Long getId() {
