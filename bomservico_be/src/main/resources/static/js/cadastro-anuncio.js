@@ -19,13 +19,11 @@ function verificarAutenticacao() {
     const token = localStorage.getItem('token');
 
     if (!login || !token) {
-        alert('Você precisa estar logado para acessar esta página!');
         window.location.href = 'login.html';
         return;
     }
 
     if (nivel !== '1') {
-        alert('Apenas prestadores de serviço podem acessar esta página!');
         window.location.href = 'index.html';
         return;
     }
@@ -91,7 +89,6 @@ async function cadastrarAnuncio() {
     const loginUsuario = localStorage.getItem('login');
 
     if (!loginUsuario) {
-        alert("Sessão expirada. Faça login novamente.");
         window.location.href = 'login.html';
         return;
     }
@@ -131,7 +128,6 @@ async function cadastrarAnuncio() {
             await uploadFotos(anuncioCriado.id);
         }
 
-        alert('Anúncio cadastrado com sucesso!');
         form.reset();
 
         document.getElementById('usu_login').value = localStorage.getItem('login');
@@ -139,7 +135,6 @@ async function cadastrarAnuncio() {
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao cadastrar: ' + error.message);
     } finally {
         btnSalvar.disabled = false;
         btnSalvar.textContent = 'Cadastrar Anúncio';
@@ -180,13 +175,11 @@ async function alterarAnuncio() {
 
         await uploadFotos(anuncioData.id);
 
-        alert('Anúncio alterado com sucesso!');
         cancelarEdicao();
         carregarAnuncios();
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao alterar anúncio: ' + error.message);
     } finally {
         btnSalvar.disabled = false;
     }
@@ -233,6 +226,7 @@ async function uploadFotos(anuncioId) {
 }
 
 // Carregar anúncios do prestador
+// Carregar anúncios do prestador
 async function carregarAnuncios() {
     const login = localStorage.getItem('login');
     const listaDiv = document.getElementById('lista-anuncios');
@@ -251,7 +245,7 @@ async function carregarAnuncios() {
         const meusAnuncios = anuncios.filter(a => a.usuario && a.usuario.login === login);
 
         if (meusAnuncios.length === 0) {
-            listaDiv.innerHTML = '<p style="color: #aaa;">Você ainda não tem anúncios cadastrados.</p>';
+            listaDiv.innerHTML = '<p style="color: #fff; opacity: 0.7; text-align: center;">Você ainda não tem anúncios cadastrados.</p>';
             return;
         }
 
@@ -261,16 +255,15 @@ async function carregarAnuncios() {
 
             let htmlFotos = '';
             if (anuncio.fotoList && anuncio.fotoList.length > 0) {
-                htmlFotos += '<div style="display: flex; gap: 10px; overflow-x: auto; margin-top: 15px; padding-bottom: 10px;">';
+                htmlFotos += '<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 20px; padding-bottom: 10px;">';
 
                 anuncio.fotoList.forEach(foto => {
-                    // http://localhost:8080/uploads/123.jpg
                     const imgUrl = BASE_URL + foto.nomeArq;
 
                     htmlFotos += `
                         <img src="${imgUrl}" 
                              alt="Foto do anúncio" 
-                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">
+                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                     `;
                 });
 
@@ -289,11 +282,11 @@ async function carregarAnuncios() {
 
                     ${htmlFotos}
 
-                    <div style="display: flex; gap: 10px; margin-top: 15px;">
-                        <button onclick="editarAnuncio(${anuncio.id})" class="submit-btn" style="padding: 10px 20px; font-size: 14px;">
+                    <div style="display: flex; gap: 15px; margin-top: 20px; justify-content: center;">
+                        <button onclick="editarAnuncio(${anuncio.id})" class="submit-btn" style="padding: 10px 25px; font-size: 0.9rem; margin-top:0;">
                             Editar
                         </button>
-                        <button onclick="confirmarExclusao(${anuncio.id})" class="submit-btn" style="background: #e74c3c; padding: 10px 20px; font-size: 14px;">
+                        <button onclick="confirmarExclusao(${anuncio.id})" class="submit-btn" style="background: linear-gradient(135deg, #ef4444, #b91c1c); padding: 10px 25px; font-size: 0.9rem; margin-top:0;">
                             Excluir
                         </button>
                     </div>
@@ -306,7 +299,7 @@ async function carregarAnuncios() {
 
     } catch (error) {
         console.error('Erro:', error);
-        listaDiv.innerHTML = '<p style="color: #e74c3c;">Erro ao carregar anúncios.</p>';
+        listaDiv.innerHTML = '<p style="color: #ef4444;">Erro ao carregar anúncios.</p>';
     }
 }
 
@@ -342,7 +335,6 @@ async function editarAnuncio(id) {
         document.getElementById('anuncio-form').scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao carregar anúncio para edição');
     }
 }
 
@@ -389,7 +381,6 @@ async function excluirAnuncio(id) {
             throw new Error(errText || 'Erro ao excluir anúncio');
         }
 
-        alert('Anúncio excluído com sucesso!');
 
         const idEditando = document.getElementById('anu_id').value;
         if (idEditando == id) {
@@ -400,7 +391,6 @@ async function excluirAnuncio(id) {
 
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao excluir anúncio: ' + error.message);
 
         carregarAnuncios();
     }
