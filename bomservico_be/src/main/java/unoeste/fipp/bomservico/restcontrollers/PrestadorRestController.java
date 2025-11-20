@@ -14,7 +14,9 @@ import unoeste.fipp.bomservico.services.CategoriaService;
 import unoeste.fipp.bomservico.services.InteresseService;
 import unoeste.fipp.bomservico.services.UsuarioService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -78,7 +80,10 @@ public class PrestadorRestController {
 
         try {
             List<Interesse> mensagens = interesseService.getMensagensDoPrestador(login);
-            return ResponseEntity.ok(mensagens);
+
+            return ResponseEntity.ok(Optional.ofNullable(mensagens).orElse(List.of()));
+
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Erro("Erro ao buscar mensagens", e.getMessage()));
         }
